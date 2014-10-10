@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1 charset=utf-8">
+<link rel="stylesheet" href="jquery.mobile-1.4.3.min.css">
+<script src="jquery-2.1.1.min.js"></script>
+<script src="jquery.mobile-1.4.3.min.js"></script>
+
+
+	<style type="text/css">
+
+	
+	
+
+p  { font-size: 1.5em; }
+h1 { font-size: 2.3em; }
+h2 { font-size: 1.9em; }
+h3 { font-size: 1.3em; }
+	
+	
+	</style>
+<script>
+
+function listInit(){
+
+$.getJSON("http://hsduell.eu/bestloader.php?callback=?&user="+localStorage.userauth+"&pass="+localStorage.passauth, function(data){
+
+for(i=0;i<data.length; i++){
+var num=i+1;
+
+	var txt2 = $('<p></p>').attr('id',num);
+   $(txt2).text(num+". "+data[i].UsernameHS);
+   $('#bestlist').append(txt2);
+
+
+}
+
+});
+
+
+}
+	
+</script>
+
+<title>HSQuiz</title>
+
+</head >
+
+<body  onLoad="listInit()">
+
+	<div data-role="page" id="pageone" >
+		<div data-role="header">
+		<a onClick="window.location.replace('index.html')" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
+			<h1>Statistic</h1>
+		</div>
+
+		<div data-role="main" class="ui-content">
+			
+			<div id="bestlist">
+			
+			</div>
+			
+			
+				
+			</div>
+		</div>
+	</div> 
+	
+	
+	
+	
+
+	
+	
+ 
+
+</body>
+</html>
