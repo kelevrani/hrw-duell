@@ -733,6 +733,112 @@ countdown(timer);
 
 
 }
+function allChecker(){
+
+$.getJSON("http://hsduell.eu/buttonabfrage.php?callback=?&user="+localStorage.userauth+"&pass="+localStorage.passauth, function(data){
+
+for (var i=0; i<data.length; i++){
+
+		if(data[i].gegner1==localStorage.userauth && data[i].gegner2==""){
+		
+			
+			
+				$("#"+data[i].opponent_ID).text("Beliebiger Spieler!");
+			
+			
+		
+		}
+
+		else if(data[i].gegner1==localStorage.userauth){
+		
+			if (data[i].folge==0 || data[i].folge==3){
+			
+				$("#"+data[i].opponent_ID).text("Du bist dran gegen: "+data[i].gegner2);
+			
+			
+			}
+			
+			else $("#"+data[i].opponent_ID).text("Gegner ist dran: "+data[i].gegner2);
+		
+		}
+		
+		else if(data[i].gegner2==localStorage.userauth){
+		
+			if (data[i].folge==1 || data[i].folge==2){
+			
+				$("#"+data[i].opponent_ID).text("Du bist dran gegen: "+data[i].gegner1);
+			
+			
+			}
+			
+			else $("#"+data[i].opponent_ID).text("Gegner ist dran: "+data[i].gegner1);
+		
+		
+		}
+		
+		
+		
+		
+
+
+}
+
+
+});
+
+$.getJSON("http://hsduell.eu/beendetespiele.php?callback=?&user="+localStorage.userauth+"&pass="+localStorage.passauth, function(data){
+
+for (var i=0; i<data.length; i++){
+
+$('#gegnercon').children().each(function(){
+
+
+	if ($(this).attr('id')==data[i].opponent_ID){
+	var ausgabe;
+   if(data[i].gewinner==localStorage.userauth) ausgabe="Gewonnen gegen:";
+   else if(data[i].gewinner=='Unentschieden') ausgabe="Unentschieden gegen:";
+   else ausgabe="Verloren gegen:";
+   
+   
+   
+  if(data[i].gegner1==localStorage.userauth){
+   
+   var txt3 = $('<button></button>').attr('id',data[i].opponent_ID);
+   $(txt3).text(ausgabe+" "+data[i].gegner2);
+   $(txt3).attr('onClick','loadbeendetcontainer($(this).attr("id"))');
+   $('#buttoncon #beendetcon').append(txt3);
+   
+   }
+   
+   else {
+   
+   var txt3 = $('<button></button>').attr('id',data[i].opponent_ID);
+   $(txt3).text(ausgabe+" "+data[i].gegner1);
+   $(txt3).attr('onClick','loadbeendetcontainer($(this).attr("id"))');
+   $('#buttoncon #beendetcon').append(txt3);
+   
+   }
+   
+	
+    $("#"+data[i].opponent_ID).remove();
+	
+	}	
+
+
+});
+
+ 
+		
+		
+		
+		}
+
+});
+
+setTimeout(function(){allChecker();}, 7000);
+
+}
+
 
 function beimstart(){
 
@@ -754,8 +860,12 @@ for (var i=0; i<data.length; i++){
   else if(data[i].gegner1==localStorage.userauth){
    
    var txt3 = $('<button></button>').attr('id',data[i].opponent_ID);
-   $(txt3).text(data[i].gegner2);
+   
    $(txt3).attr('onClick','RFChecker($(this).attr("id"))');
+   if (data[i].folge==0 || data[i].folge==3){
+   $(txt3).text("Du bist dran gegen: "+data[i].gegner2);}
+   
+   else $(txt3).text("Gegner ist dran: "+data[i].gegner2);
    $('#buttoncon #gegnercon').append(txt3);
    
    }
@@ -763,8 +873,13 @@ for (var i=0; i<data.length; i++){
    else {
    
    var txt3 = $('<button></button>').attr('id',data[i].opponent_ID);
-   $(txt3).text(data[i].gegner1);
+   
    $(txt3).attr('onClick','RFChecker($(this).attr("id"))');
+   if (data[i].folge==1 || data[i].folge==2){
+   $(txt3).text("Du bist dran gegen: "+data[i].gegner1);}
+   
+   else $(txt3).text("Gegner ist dran: "+data[i].gegner1);
+   
    $('#buttoncon #gegnercon').append(txt3);
    
    }
@@ -814,7 +929,7 @@ for (var i=0; i<data.length; i++){
 });
 
   
-   
+allChecker(); 
    
 }
 
@@ -1142,7 +1257,7 @@ $('#fragencon3').children().prop("disabled",false);
 			<a onClick="showMenu()" class="ui-btn ui-icon-bullets ui-btn-icon-right">Menu</a>
 			<ul>	
 				
-				<li onClick="window.location.replace('statistic.html')">Statistic</li>
+				<li onClick="window.location.replace('statistic.html')">Profil</li>
 				<li onClick="window.location.replace('bestenliste.html')">Bestenliste</li>
 				<li onClick="abmelden()">Abmelden</li>
 			</ul>

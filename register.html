@@ -59,7 +59,7 @@ $(document).ready(function(){$("#myPopup").popup("open");});}
 else{
 
 $.getJSON("http://hsduell.eu/UserRegistration.php?callback=?&user="+username+"&pass="+password+"&email="+email, function(data){
-   if (data.a=='True') {window.location.replace("quiz.html");}
+   if (data.a=='True') {window.location.replace("index.html");}
    else if (data.a=='False') {$(document).ready(function() {
 
     $("#meldung").text('User existiert bereits!');
